@@ -1,8 +1,7 @@
-
-import User from '../models/user.model.js';
+import User from "../models/user.model.js";
 
 export const registerUser = async (req, res) => {
-  const { name, email, password} = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
@@ -22,7 +21,32 @@ export const registerUser = async (req, res) => {
       name: user.name,
       email: user.email,
 
-    //   token: user.generateAuthToken(),
+      //   token: user.generateAuthToken(),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      // token: user.generateAuthToken(),
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
