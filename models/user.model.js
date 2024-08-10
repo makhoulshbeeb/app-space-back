@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
-// import appSchema from "./app.model.js";
+
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 const userSchema = new Schema({
@@ -17,7 +17,7 @@ const userSchema = new Schema({
   },
 
   password: { type: String, required: true },
-  // apps: [appSchema],
+  
 });
 
 userSchema.pre("save", async function (next) {
