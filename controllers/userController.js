@@ -20,9 +20,7 @@ export const registerUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-  
-
-      //   token: user.generateAuthToken(),
+      token: user.generateAuthToken(),
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -47,7 +45,7 @@ export const loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      // token: user.generateAuthToken(),
+      token: user.generateAuthToken(),
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
