@@ -17,15 +17,15 @@ export const getApp = async (req, res) => {
 
 export const getAllApps = async (req, res) => {
   try {
-    const apps = await App.find(); 
+    const apps = await App.find();
     res.status(200).json(apps);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 export const createApp = async (req, res) => {
-  const { name, price, rating, reviews } = req.body;
-  const newApp = new App({ name, price, rating, reviews });
+  const { name, category, price, rating, reviews } = req.body;
+  const newApp = new App({ name, category, price, rating, reviews });
   await newApp.save();
   res.json(newApp);
 };
@@ -34,9 +34,7 @@ export const getAppBySearch = async (req, res) => {
   try {
     const { search } = req.params;
 
-   
-    const searchRgx = new RegExp(search, 'i');
-
+    const searchRgx = new RegExp(search, "i");
 
     const results = await App.find({ name: searchRgx });
 
@@ -45,4 +43,18 @@ export const getAppBySearch = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-    
+export const getAppByCategory = async (req, res) => {
+  try {
+    const apps = await App.find({
+      "category.category_name": req.params.category_name,
+    });
+
+    if (apps.length > 0) {
+      res.json(apps);
+    } else {
+      res.status(404).json({ message: "Apps not found in this category" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
