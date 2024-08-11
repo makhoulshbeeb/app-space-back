@@ -17,7 +17,7 @@ export const getApp = async (req, res) => {
 
 export const getAllApps = async (req, res) => {
   try {
-    const apps = await App.find(); // Using the correct model for querying
+    const apps = await App.find(); 
     res.status(200).json(apps);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -29,3 +29,20 @@ export const createApp = async (req, res) => {
   await newApp.save();
   res.json(newApp);
 };
+
+export const getAppBySearch = async (req, res) => {
+  try {
+    const { search } = req.params;
+
+   
+    const searchRgx = new RegExp(search, 'i');
+
+
+    const results = await App.find({ name: searchRgx });
+
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+    
