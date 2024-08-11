@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 
 export const registerUser = async (req, res) => {
-  const { name,username, email, password } = req.body;
+  const { name, username, email, password } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
@@ -11,7 +11,6 @@ export const registerUser = async (req, res) => {
     }
 
     const user = await User.create({
-      
       name,
       username,
       email,
@@ -21,7 +20,7 @@ export const registerUser = async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
-      username:user.username,
+      username: user.username,
       email: user.email,
       token: user.generateAuthToken(),
     });
@@ -50,6 +49,20 @@ export const loginUser = async (req, res) => {
       role: user.role,
       token: user.generateAuthToken(),
     });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+export const getUserByName = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne({ username }).select("-password"); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
