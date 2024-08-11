@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.get("/app/:id", getApp);
-router.get("/app", getAllApps);
-router.post("/app", createApp);
-router.get("/app/search/:search", getAppBySearch);
-router.get("/app/category/:category_name", getAppByCategory);
+router.get("/apps/:id", getApp);
+router.get("/apps", getAllApps);
+router.post("/apps", createApp);
+router.get("/apps/search/:search", getAppBySearch);
+router.get("/apps/category/:category_name", getAppByCategory);
 
 export default router;
